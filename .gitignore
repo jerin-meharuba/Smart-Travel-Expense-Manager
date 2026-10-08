@@ -1,0 +1,53 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# JavaScript / frontend tooling
+node_modules/
+.npm/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+coverage/
+*.tsbuildinfo
+
+# Build and framework outputs
+out/
+target/
+public/build/
+
+# Caches and logs
+.cache/
+*.log
+logs/
+
+# IDE and editor files
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
