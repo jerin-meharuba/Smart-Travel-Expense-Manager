@@ -59,6 +59,61 @@ Hiding frontend controls is not sufficient authorization.
 
 ## 3. Use Cases
 
+
+```mermaid
+flowchart LR
+    User((Regular User))
+    Admin((Administrator))
+
+    subgraph System[Smart Travel Expense Planner]
+        UC1[Register Account]
+        UC2[Log In]
+        UC3[Log Out]
+        UC4[Create Trip]
+        UC5[View Trips]
+        UC6[Update Trip]
+        UC7[Delete Trip]
+        UC8[Manage Travelers]
+        UC9[Add Expense]
+        UC10[View Expenses]
+        UC11[Update Expense]
+        UC12[Delete Expense]
+        UC13[Set Trip Budget]
+        UC14[Set Category Budget]
+        UC15[View Dashboard]
+        UC16[Filter Charts]
+        UC17[View Budget vs Actual]
+        UC18[Access Admin Functions]
+    end
+
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    User --> UC5
+    User --> UC6
+    User --> UC7
+    User --> UC8
+    User --> UC9
+    User --> UC10
+    User --> UC11
+    User --> UC12
+    User --> UC13
+    User --> UC14
+    User --> UC15
+    User --> UC16
+    User --> UC17
+
+    Admin --> UC2
+    Admin --> UC3
+    Admin --> UC18
+
+    UC15 --> UC16
+    UC15 --> UC17
+    UC9 --> UC10
+    UC13 --> UC17
+    UC14 --> UC17
+```
 ### 3.1 Register and Authenticate
 
 **Primary actor:** Visitor or registered user
