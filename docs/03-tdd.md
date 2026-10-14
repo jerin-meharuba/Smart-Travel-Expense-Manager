@@ -53,7 +53,32 @@ architecture, database structure, API design, and security approach.
 The frontend and backend are separate applications. FastAPI does not
 need to serve the frontend build.
 
-### 2.2 High-Level Architecture
+### 2.2 Tech Stack
+
+The selected technology stack is:
+
+  Layer                 Technology
+  --------------------- -----------------------------
+  Frontend framework    React
+  Frontend language     TypeScript
+  Frontend tooling      Vite
+  Routing               React Router
+  HTTP client           Axios
+  Styling               Tailwind CSS or Bootstrap 5
+  Charts                Recharts or Plotly.js
+  Backend language      Python 3.11+
+  API framework         FastAPI
+  Validation            Pydantic
+  ORM                   SQLAlchemy 2.0
+  ASGI server           Uvicorn
+  Database migrations   Alembic
+  Database              PostgreSQL on Neon
+
+The frontend stack supports an independently deployed browser
+application. The backend stack supports documented REST APIs, schema
+validation, database-backed business logic, and managed migrations.
+
+### 2.3 High-Level Architecture
 
 ``` mermaid
 flowchart LR
@@ -70,7 +95,7 @@ flowchart LR
     API --> Migrations[Alembic migrations]
 ```
 
-### 2.3 Request Flow
+### 2.4 Request Flow
 
 1.  A user interacts with the React frontend.
 2.  A frontend service sends a request through Axios.

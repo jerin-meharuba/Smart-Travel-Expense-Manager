@@ -69,6 +69,38 @@ modules are not part of this scope unless approved separately.
 A user must not access another user's private records. The frontend must
 not be the only layer enforcing permissions.
 
+### 4.1 Target Users
+
+-   Individual travelers who want to plan trips and track travel
+    expenses in one place.
+-   Small travel groups that need to organize shared trip costs,
+    travelers, and budgets.
+-   Project reviewers or administrators who need controlled access to
+    user and project data.
+
+### 4.2 User Stories
+
+-   As a traveler, I want to create a trip with destinations and dates
+    so that I can organize planned travel.
+-   As a traveler, I want to add expenses with their original currency
+    so that my transaction history remains accurate.
+-   As a traveler, I want to compare spending against budgets so that I
+    can avoid overspending during a trip.
+-   As a traveler, I want dashboard charts based on saved records so
+    that I can understand spending patterns.
+-   As an administrator, I want administrator-only access controls so
+    that restricted actions are protected by the backend.
+
+### 4.3 Milestones
+
+1.  Finalize project documentation and requirements.
+2.  Set up the independent React + TypeScript frontend and FastAPI
+    backend.
+3.  Implement authentication, roles, and backend authorization checks.
+4.  Build trip, traveler, expense, category, and budget management.
+5.  Add database-backed dashboard metrics and charts.
+6.  Review, test, and prepare the project for deployment.
+
 ## 5. Functional Requirements
 
 ### 5.1 Frontend and Backend Separation
