@@ -57,9 +57,115 @@ Hiding frontend controls is not sufficient authorization.
 -   Alembic for database migrations.
 -   Swagger UI for API documentation.
 
-## 3. Functional Requirements
+## 3. Use Cases
 
-### 3.1 Frontend and Backend Separation
+### 3.1 Register and Authenticate
+
+**Primary actor:** Visitor or registered user
+
+**Goal:** Create an account, log in, and access protected application
+features.
+
+**Main flow:**
+
+1.  The visitor submits valid registration details.
+2.  The backend validates the request and stores a securely hashed
+    password.
+3.  The user logs in with valid credentials.
+4.  The backend returns or establishes authenticated access.
+5.  The frontend allows access to protected trip, expense, budget, and
+    dashboard views.
+
+**Alternate flows:**
+
+-   Invalid registration data is rejected with a client-error response.
+-   Invalid login credentials do not grant access.
+-   Protected endpoints return HTTP 401 when authentication is missing
+    or invalid.
+
+### 3.2 Manage Trip and Travelers
+
+**Primary actor:** Regular user
+
+**Goal:** Create a trip and manage travelers associated with that trip.
+
+**Main flow:**
+
+1.  The user creates a trip with name, destination, start date, end
+    date, and status.
+2.  The backend validates the date range and ownership.
+3.  The user adds traveler records to the trip.
+4.  The user views or removes travelers as needed.
+
+**Alternate flows:**
+
+-   Invalid date ranges are rejected.
+-   Attempts to access another user's trip or travelers return an
+    authorization-safe error.
+
+### 3.3 Manage Expenses and Budgets
+
+**Primary actor:** Regular user
+
+**Goal:** Record expenses and compare spending against planned budgets.
+
+**Main flow:**
+
+1.  The user creates an expense for an accessible trip.
+2.  The backend stores the original amount and original currency.
+3.  The user configures trip or category budgets.
+4.  The system calculates actual spending, remaining budget, budget
+    usage, and overspending from stored expenses.
+
+**Alternate flows:**
+
+-   Invalid amounts, dates, categories, or trip references are rejected.
+-   Currency conversion stores converted values separately from original
+    transaction values when conversion is implemented.
+
+### 3.4 View Dashboard Analytics
+
+**Primary actor:** Regular user
+
+**Goal:** View accurate trip and expense summaries based on database
+records.
+
+**Main flow:**
+
+1.  The user opens the dashboard.
+2.  The frontend requests summary, breakdown, trend, and budget
+    comparison data from FastAPI.
+3.  The backend calculates results from authorized database records.
+4.  The frontend renders metrics and interactive charts.
+5.  Charts update when filters change.
+
+**Alternate flows:**
+
+-   Loading, error, and empty-data states are shown when appropriate.
+-   The backend excludes records the user is not authorized to access.
+
+### 3.5 Administer Restricted Functions
+
+**Primary actor:** Administrator
+
+**Goal:** Use administrator-only capabilities without exposing them to
+regular users.
+
+**Main flow:**
+
+1.  The administrator authenticates.
+2.  The administrator requests an administrator-only endpoint.
+3.  The backend verifies the administrator role.
+4.  The backend performs the authorized action.
+
+**Alternate flows:**
+
+-   Regular users receive HTTP 403 for administrator-only endpoints.
+-   Unauthenticated users receive HTTP 401.
+
+## 4. Functional Requirements
+
+### 4.1 Frontend and Backend Separation
 
 **FR-01 --- Independent applications**
 
@@ -87,7 +193,7 @@ settings.
 reach the API. - Origins are configured explicitly rather than allowing
 arbitrary origins by default.
 
-### 3.2 REST API and Validation
+### 4.2 REST API and Validation
 
 **FR-04 --- Versioned API**
 
@@ -113,7 +219,7 @@ status codes are documented.
 
 The API must return JSON responses and suitable HTTP status codes.
 
-### 3.3 Authentication and Authorization
+### 4.3 Authentication and Authorization
 
 **FR-08 --- Registration**
 
@@ -155,7 +261,7 @@ endpoints reject unauthenticated requests. - Regular users cannot use
 administrator-only endpoints. - Ownership checks are performed by the
 backend.
 
-### 3.4 Trip Management
+### 4.4 Trip Management
 
 **FR-15 --- Trip CRUD**
 
@@ -176,7 +282,7 @@ than the start date.
 
 Users must be able to assign a budget to a trip.
 
-### 3.5 Traveler Management
+### 4.5 Traveler Management
 
 **FR-19 --- Multiple travelers**
 
@@ -191,7 +297,7 @@ associated with a trip.
 trip. - Users cannot manage travelers belonging to trips they cannot
 access.
 
-### 3.6 Expense Management
+### 4.6 Expense Management
 
 **FR-21 --- Expense CRUD**
 
@@ -213,7 +319,7 @@ before allowing access or modification.
 The original amount and currency must remain stored separately from any
 converted values.
 
-### 3.7 Budget Management
+### 4.7 Budget Management
 
 **FR-25 --- Budget configuration**
 
@@ -229,7 +335,7 @@ usage from stored expenses.
 The system must compare actual spending with planned budgets and
 indicate overspending.
 
-### 3.8 Financial Data Integrity
+### 4.8 Financial Data Integrity
 
 **FR-28 --- Preserve source transaction**
 
@@ -257,7 +363,7 @@ Financial amounts and exchange rates must use suitable precise database
 numeric types rather than binary floating-point storage for transaction
 amounts.
 
-### 3.9 Dashboard and Analytics
+### 4.9 Dashboard and Analytics
 
 **FR-33 --- Database-backed metrics**
 
@@ -290,7 +396,7 @@ change.
 
 The frontend must show loading, error, and empty-data states.
 
-## 4. Non-Functional Requirements
+## 5. Non-Functional Requirements
 
 **NFR-01 --- Separation**
 
@@ -323,7 +429,7 @@ Database schema changes must be managed using Alembic migrations.
 Dashboard figures and charts must reflect actual database data rather
 than hard-coded sample values.
 
-## 5. Data Requirements
+## 6. Data Requirements
 
 The required database tables are:
 
@@ -339,7 +445,7 @@ The required database tables are:
 Tables must use primary keys, foreign keys, and suitable indexes. Exact
 columns and constraints are specified in `03-tdd.md`.
 
-## 6. HTTP Status Code Requirements
+## 7. HTTP Status Code Requirements
 
   -----------------------------------------------------------------------
   Status                              Required use
@@ -371,7 +477,7 @@ columns and constraints are specified in `03-tdd.md`.
                                       exposing secrets
   -----------------------------------------------------------------------
 
-## 7. Acceptance Checklist
+## 8. Acceptance Checklist
 
 -   [ ] React + TypeScript frontend runs independently.
 -   [ ] FastAPI backend runs independently.
@@ -387,7 +493,7 @@ columns and constraints are specified in `03-tdd.md`.
 -   [ ] Dashboard metrics and charts use actual database records.
 -   [ ] Alembic migrations manage schema changes.
 
-## 8. Related Documents
+## 9. Related Documents
 
 -   `01-prd.md` describes product goals and scope.
 -   `03-tdd.md` describes architecture, data models, and API design.
