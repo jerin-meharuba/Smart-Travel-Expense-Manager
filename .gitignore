@@ -18,6 +18,7 @@ dist/
 .ruff_cache/
 .coverage
 htmlcov/
+backend/smart_travel_expense.db
 
 # JavaScript / frontend tooling
 node_modules/
