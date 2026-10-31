@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import { ExpenseManager } from "./components/ExpenseManager";
 import type { Trip, TripFormValues } from "./types/trip";
 import { tripApi } from "./services/trips";
 
@@ -25,6 +26,7 @@ function formValuesFromTrip(trip: Trip): TripFormValues {
 }
 
 function App() {
+  const [activeSection, setActiveSection] = useState<"trips" | "expenses">("trips");
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   const [formValues, setFormValues] = useState<TripFormValues>(emptyForm);
@@ -101,12 +103,31 @@ function App() {
     <main className="app-shell">
       <header className="app-header">
         <h1>Smart Travel Expense Manager</h1>
-        <p>Create and manage your travel plans.</p>
+        <p>Create trips and record their expenses.</p>
+        <div className="section-tabs" role="tablist" aria-label="Application sections">
+          <button
+            className={activeSection === "trips" ? "tab-button active" : "tab-button"}
+            type="button"
+            onClick={() => setActiveSection("trips")}
+          >
+            Trips
+          </button>
+          <button
+            className={activeSection === "expenses" ? "tab-button active" : "tab-button"}
+            type="button"
+            onClick={() => setActiveSection("expenses")}
+          >
+            Expenses
+          </button>
+        </div>
       </header>
 
       {error && <p className="error-message">{error}</p>}
 
-      <section className="trip-layout">
+      {activeSection === "expenses" ? (
+        <ExpenseManager />
+      ) : (
+        <section className="trip-layout">
         <div className="panel">
           <div className="actions">
             <h2>Trips</h2>
@@ -221,7 +242,8 @@ function App() {
             </div>
           </form>
         </div>
-      </section>
+        </section>
+      )}
     </main>
   );
 }

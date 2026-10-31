@@ -36,6 +36,25 @@ button {
   margin-bottom: 8px;
 }
 
+.section-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.tab-button {
+  padding: 8px 12px;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.tab-button.active {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+
 .trip-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
