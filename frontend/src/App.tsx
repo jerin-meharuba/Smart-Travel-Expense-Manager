@@ -1,5 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
+import { AuthScreen } from "./components/AuthScreen";
 import { ExpenseManager } from "./components/ExpenseManager";
+import { ProfilePanel } from "./components/ProfilePanel";
+import { authApi } from "./services/auth";
+import { clearAccessToken, hasAccessToken } from "./services/api";
+import type { User } from "./types/auth";
 import type { Trip, TripFormValues } from "./types/trip";
 import { tripApi } from "./services/trips";
 
@@ -26,7 +31,8 @@ function formValuesFromTrip(trip: Trip): TripFormValues {
 }
 
 function App() {
-  const [activeSection, setActiveSection] = useState<"trips" | "expenses">("trips");
+  const [activeSection, setActiveSection] = useState<"trips" | "expenses" | "profile">("trips");
+  const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   const [formValues, setFormValues] = useState<TripFormValues>(emptyForm);
@@ -48,8 +54,28 @@ function App() {
   }
 
   useEffect(() => {
-    void loadTrips();
+    async function restoreSession() {
+      if (!hasAccessToken()) {
+        setCurrentUser(null);
+        return;
+      }
+
+      try {
+        setCurrentUser(await authApi.me());
+      } catch {
+        clearAccessToken();
+        setCurrentUser(null);
+      }
+    }
+
+    void restoreSession();
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      void loadTrips();
+    }
+  }, [currentUser]);
 
   function selectTrip(trip: Trip) {
     setSelectedTrip(trip);
@@ -99,6 +125,27 @@ function App() {
     setFormValues((currentValues) => ({ ...currentValues, [field]: value }));
   }
 
+  async function logout() {
+    try {
+      await authApi.logout();
+    } catch {
+      // The token is removed locally even when it has already expired.
+      clearAccessToken();
+    } finally {
+      setCurrentUser(null);
+      setTrips([]);
+      startNewTrip();
+    }
+  }
+
+  if (currentUser === undefined) {
+    return <main className="auth-shell">Loading account...</main>;
+  }
+
+  if (currentUser === null) {
+    return <AuthScreen onAuthenticated={setCurrentUser} />;
+  }
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -119,12 +166,21 @@ function App() {
           >
             Expenses
           </button>
+          <button
+            className={activeSection === "profile" ? "tab-button active" : "tab-button"}
+            type="button"
+            onClick={() => setActiveSection("profile")}
+          >
+            Profile
+          </button>
         </div>
       </header>
 
       {error && <p className="error-message">{error}</p>}
 
-      {activeSection === "expenses" ? (
+      {activeSection === "profile" ? (
+        <ProfilePanel user={currentUser} onLogout={() => void logout()} />
+      ) : activeSection === "expenses" ? (
         <ExpenseManager />
       ) : (
         <section className="trip-layout">

@@ -33,6 +33,7 @@ app.add_middleware(
 app.include_router(trips_router, prefix="/api/v1")
 app.include_router(categories_router, prefix="/api/v1")
 app.include_router(expenses_router, prefix="/api/v1")
+app.include_router(auth_router, prefix="/api/v1")
 
 
 @app.get("/")
@@ -43,3 +44,4 @@ def read_root() -> dict[str, str]:
 @app.get("/health")
 def health_check() -> dict[str, str]:
     return {"status": "ok"}
+from app.auth.router import router as auth_router

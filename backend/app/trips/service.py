@@ -6,32 +6,37 @@ from fastapi import HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.auth.models import User
 from app.trips.models import Trip
 from app.trips.schemas import TripCreate, TripUpdate
 
 
-def get_trip_or_404(db: Session, trip_id: int) -> Trip:
-    """Return a trip or the standard not-found API response."""
-    trip = db.get(Trip, trip_id)
+def get_trip_or_404(db: Session, trip_id: int, user: User) -> Trip:
+    """Return a user's trip without revealing another user's data."""
+    trip = db.scalar(select(Trip).where(Trip.id == trip_id, Trip.user_id == user.id))
     if trip is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Trip not found")
     return trip
 
 
-def create_trip(db: Session, trip_data: TripCreate) -> Trip:
+def create_trip(db: Session, trip_data: TripCreate, user: User) -> Trip:
     """Persist a newly validated trip."""
-    trip = Trip(**trip_data.model_dump())
+    trip = Trip(**trip_data.model_dump(), user_id=user.id)
     db.add(trip)
     db.commit()
     db.refresh(trip)
     return trip
 
 
-def list_trips(db: Session, offset: int, limit: int) -> tuple[list[Trip], int]:
-    """Return newest trips first together with their total count."""
-    total = db.scalar(select(func.count()).select_from(Trip)) or 0
+def list_trips(db: Session, offset: int, limit: int, user: User) -> tuple[list[Trip], int]:
+    """Return only the current user's newest trips with their total count."""
+    total = db.scalar(select(func.count()).select_from(Trip).where(Trip.user_id == user.id)) or 0
     trips = db.scalars(
-        select(Trip).order_by(Trip.created_at.desc(), Trip.id.desc()).offset(offset).limit(limit)
+        select(Trip)
+        .where(Trip.user_id == user.id)
+        .order_by(Trip.created_at.desc(), Trip.id.desc())
+        .offset(offset)
+        .limit(limit)
     ).all()
     return trips, total
 
