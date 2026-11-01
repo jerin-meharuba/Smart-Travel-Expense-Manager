@@ -36,6 +36,7 @@ def create_tables() -> None:
     """Create local tables for a first-run development database."""
     # Importing the model registers it with Base.metadata before create_all.
     from app.auth import models as auth_models  # noqa: F401
+    from app.budgets import models as budget_models  # noqa: F401
     from app.categories import models as category_models  # noqa: F401
     from app.expenses import models as expense_models  # noqa: F401
     from app.trips import models  # noqa: F401
