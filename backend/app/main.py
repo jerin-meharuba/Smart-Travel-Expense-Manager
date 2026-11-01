@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.auth.router import router as auth_router
+from app.budgets.router import router as budgets_router
 from app.categories.router import router as categories_router
 from app.categories.service import seed_default_categories
 from app.config import get_frontend_origin
@@ -34,6 +36,7 @@ app.include_router(trips_router, prefix="/api/v1")
 app.include_router(categories_router, prefix="/api/v1")
 app.include_router(expenses_router, prefix="/api/v1")
 app.include_router(auth_router, prefix="/api/v1")
+app.include_router(budgets_router, prefix="/api/v1")
 
 
 @app.get("/")
@@ -44,4 +47,3 @@ def read_root() -> dict[str, str]:
 @app.get("/health")
 def health_check() -> dict[str, str]:
     return {"status": "ok"}
-from app.auth.router import router as auth_router

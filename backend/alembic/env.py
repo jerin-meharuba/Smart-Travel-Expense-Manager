@@ -6,6 +6,7 @@ from sqlalchemy import engine_from_config, pool
 from app.config import get_database_url
 from app.database import Base
 from app.auth.models import User  # noqa: F401
+from app.budgets.models import Budget  # noqa: F401
 from app.categories.models import Category  # noqa: F401
 from app.expenses.models import Expense  # noqa: F401
 from app.trips.models import Trip  # noqa: F401

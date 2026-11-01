@@ -17,8 +17,6 @@ export type TripFormValues = {
   start_date: string;
   end_date: string;
   status: string;
-  budget_amount: string;
-  budget_currency: string;
 };
 
 export type TripListResponse = {
