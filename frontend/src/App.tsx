@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { AuthScreen } from "./components/AuthScreen";
+import { BudgetManager } from "./components/BudgetManager";
 import { ExpenseManager } from "./components/ExpenseManager";
 import { ProfilePanel } from "./components/ProfilePanel";
 import { authApi } from "./services/auth";
@@ -14,8 +15,6 @@ const emptyForm: TripFormValues = {
   start_date: "",
   end_date: "",
   status: "planned",
-  budget_amount: "",
-  budget_currency: "USD",
 };
 
 function formValuesFromTrip(trip: Trip): TripFormValues {
@@ -25,13 +24,11 @@ function formValuesFromTrip(trip: Trip): TripFormValues {
     start_date: trip.start_date,
     end_date: trip.end_date,
     status: trip.status,
-    budget_amount: trip.budget_amount ?? "",
-    budget_currency: trip.budget_currency ?? "USD",
   };
 }
 
 function App() {
-  const [activeSection, setActiveSection] = useState<"trips" | "expenses" | "profile">("trips");
+  const [activeSection, setActiveSection] = useState<"trips" | "expenses" | "budgets" | "profile">("trips");
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
@@ -167,6 +164,13 @@ function App() {
             Expenses
           </button>
           <button
+            className={activeSection === "budgets" ? "tab-button active" : "tab-button"}
+            type="button"
+            onClick={() => setActiveSection("budgets")}
+          >
+            Budgets
+          </button>
+          <button
             className={activeSection === "profile" ? "tab-button active" : "tab-button"}
             type="button"
             onClick={() => setActiveSection("profile")}
@@ -180,6 +184,8 @@ function App() {
 
       {activeSection === "profile" ? (
         <ProfilePanel user={currentUser} onLogout={() => void logout()} />
+      ) : activeSection === "budgets" ? (
+        <BudgetManager />
       ) : activeSection === "expenses" ? (
         <ExpenseManager />
       ) : (
@@ -255,36 +261,16 @@ function App() {
                 />
               </label>
             </div>
-            <div className="two-column">
-              <label>
-                Status
-                <select
-                  value={formValues.status}
-                  onChange={(event) => updateField("status", event.target.value)}
-                >
-                  <option value="planned">Planned</option>
-                  <option value="active">Active</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </label>
-              <label>
-                Budget amount (optional)
-                <input
-                  min="0"
-                  step="0.01"
-                  type="number"
-                  value={formValues.budget_amount}
-                  onChange={(event) => updateField("budget_amount", event.target.value)}
-                />
-              </label>
-            </div>
             <label>
-              Budget currency
-              <input
-                maxLength={3}
-                value={formValues.budget_currency}
-                onChange={(event) => updateField("budget_currency", event.target.value)}
-              />
+              Status
+              <select
+                value={formValues.status}
+                onChange={(event) => updateField("status", event.target.value)}
+              >
+                <option value="planned">Planned</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+              </select>
             </label>
             <div className="actions">
               <button className="primary-button" disabled={isSaving} type="submit">

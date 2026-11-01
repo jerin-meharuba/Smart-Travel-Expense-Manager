@@ -8,12 +8,6 @@ function toPayload(values: TripFormValues) {
     start_date: values.start_date,
     end_date: values.end_date,
     status: values.status,
-    ...(values.budget_amount
-      ? {
-          budget_amount: values.budget_amount,
-          budget_currency: values.budget_currency,
-        }
-      : {}),
   };
 }
 
