@@ -9,6 +9,7 @@ from app.categories.router import router as categories_router
 from app.categories.service import seed_default_categories
 from app.config import get_frontend_origin
 from app.database import SessionLocal, create_tables
+from app.dashboard.router import router as dashboard_router
 from app.expenses.router import router as expenses_router
 from app.trips.router import router as trips_router
 
@@ -37,6 +38,7 @@ app.include_router(categories_router, prefix="/api/v1")
 app.include_router(expenses_router, prefix="/api/v1")
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(budgets_router, prefix="/api/v1")
+app.include_router(dashboard_router, prefix="/api/v1")
 
 
 @app.get("/")
