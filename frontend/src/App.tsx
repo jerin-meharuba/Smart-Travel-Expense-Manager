@@ -1,5 +1,6 @@
 import { FormEvent, lazy, Suspense, useEffect, useState } from "react";
 import { AuthScreen } from "./components/AuthScreen";
+import { AdminPanel } from "./components/AdminPanel";
 import { BudgetManager } from "./components/BudgetManager";
 import { ExpenseManager } from "./components/ExpenseManager";
 import { ProfilePanel } from "./components/ProfilePanel";
@@ -32,7 +33,7 @@ function formValuesFromTrip(trip: Trip): TripFormValues {
 }
 
 function App() {
-  const [activeSection, setActiveSection] = useState<"trips" | "expenses" | "budgets" | "dashboard" | "profile">("trips");
+  const [activeSection, setActiveSection] = useState<"trips" | "expenses" | "budgets" | "dashboard" | "admin" | "profile">("trips");
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
@@ -181,6 +182,15 @@ function App() {
           >
             Dashboard
           </button>
+          {currentUser.role === "admin" && (
+            <button
+              className={activeSection === "admin" ? "tab-button active" : "tab-button"}
+              type="button"
+              onClick={() => setActiveSection("admin")}
+            >
+              Admin
+            </button>
+          )}
           <button
             className={activeSection === "profile" ? "tab-button active" : "tab-button"}
             type="button"
@@ -195,6 +205,8 @@ function App() {
 
       {activeSection === "profile" ? (
         <ProfilePanel user={currentUser} onLogout={() => void logout()} />
+      ) : activeSection === "admin" && currentUser.role === "admin" ? (
+        <AdminPanel currentUser={currentUser} />
       ) : activeSection === "dashboard" ? (
         <Suspense fallback={<p className="dashboard-state">Loading dashboard...</p>}>
           <DashboardPanel />
