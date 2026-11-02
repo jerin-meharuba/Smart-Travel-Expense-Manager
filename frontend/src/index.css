@@ -187,9 +187,131 @@ button {
   color: #b91c1c;
 }
 
+.dashboard-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.dashboard-heading,
+.dashboard-filters,
+.metric-grid,
+.chart-grid,
+.comparison-row {
+  display: flex;
+  gap: 16px;
+}
+
+.dashboard-heading,
+.comparison-row {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-heading h2,
+.dashboard-heading p,
+.comparison-row p {
+  margin: 0;
+}
+
+.dashboard-heading p {
+  margin-top: 4px;
+  color: #4b5563;
+}
+
+.dashboard-filters {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.dashboard-filters label {
+  display: grid;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.dashboard-filters input,
+.dashboard-filters select {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.metric-card {
+  display: grid;
+  gap: 8px;
+  min-height: 100px;
+  padding: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.metric-card span {
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.metric-card strong {
+  overflow-wrap: anywhere;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.chart-grid .chart-panel:last-child {
+  grid-column: 1 / -1;
+}
+
+.chart-panel h3,
+.comparison-panel h3 {
+  margin-top: 0;
+}
+
+.comparison-list {
+  display: grid;
+  gap: 10px;
+}
+
+.comparison-row {
+  padding: 12px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dashboard-state {
+  padding: 24px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
 @media (max-width: 760px) {
   .trip-layout,
-  .two-column {
+  .two-column,
+  .dashboard-filters,
+  .metric-grid,
+  .chart-grid {
     grid-template-columns: 1fr;
+  }
+
+  .chart-grid .chart-panel:last-child {
+    grid-column: auto;
+  }
+
+  .dashboard-heading,
+  .comparison-row {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
