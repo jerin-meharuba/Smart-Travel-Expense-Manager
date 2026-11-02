@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, lazy, Suspense, useEffect, useState } from "react";
 import { AuthScreen } from "./components/AuthScreen";
 import { BudgetManager } from "./components/BudgetManager";
 import { ExpenseManager } from "./components/ExpenseManager";
@@ -8,6 +8,10 @@ import { clearAccessToken, hasAccessToken } from "./services/api";
 import type { User } from "./types/auth";
 import type { Trip, TripFormValues } from "./types/trip";
 import { tripApi } from "./services/trips";
+
+const DashboardPanel = lazy(() =>
+  import("./components/DashboardPanel").then((module) => ({ default: module.DashboardPanel })),
+);
 
 const emptyForm: TripFormValues = {
   name: "",
@@ -28,7 +32,7 @@ function formValuesFromTrip(trip: Trip): TripFormValues {
 }
 
 function App() {
-  const [activeSection, setActiveSection] = useState<"trips" | "expenses" | "budgets" | "profile">("trips");
+  const [activeSection, setActiveSection] = useState<"trips" | "expenses" | "budgets" | "dashboard" | "profile">("trips");
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined);
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
@@ -171,6 +175,13 @@ function App() {
             Budgets
           </button>
           <button
+            className={activeSection === "dashboard" ? "tab-button active" : "tab-button"}
+            type="button"
+            onClick={() => setActiveSection("dashboard")}
+          >
+            Dashboard
+          </button>
+          <button
             className={activeSection === "profile" ? "tab-button active" : "tab-button"}
             type="button"
             onClick={() => setActiveSection("profile")}
@@ -184,6 +195,10 @@ function App() {
 
       {activeSection === "profile" ? (
         <ProfilePanel user={currentUser} onLogout={() => void logout()} />
+      ) : activeSection === "dashboard" ? (
+        <Suspense fallback={<p className="dashboard-state">Loading dashboard...</p>}>
+          <DashboardPanel />
+        </Suspense>
       ) : activeSection === "budgets" ? (
         <BudgetManager />
       ) : activeSection === "expenses" ? (
