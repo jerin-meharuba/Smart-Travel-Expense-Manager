@@ -9,7 +9,7 @@ import sqlalchemy as sa
 
 
 revision = "0004_add_budgets"
-down_revision = "0003_add_users_and_trip_ownership"
+down_revision = "0003_users_trip_owner"
 branch_labels = None
 depends_on = None
 
