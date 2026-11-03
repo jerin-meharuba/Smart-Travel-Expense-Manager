@@ -21,7 +21,7 @@ manage user accounts.
 - Trip, expense, and budget management.
 - Seeded, read-only expense categories.
 - Dashboard summaries and category spending data.
-- Administrator user management.
+  
 
 ## Project Structure
 
