@@ -1,178 +1,102 @@
 # Smart Travel Expense Manager
 
-A simple web application for managing travel expenses, trips, and budgets. This project is developed as part of a university Web Development course.
-
-## About the Project
-
-Smart Travel Expense Manager helps users organize their travel information and track expenses. Users can manage trips, record expenses, and monitor their budgets through a simple web interface.
-
-The project uses React and TypeScript for the frontend, FastAPI for the backend, and MySQL for the database.
-
-## Features
-
-- Manage travel trips.
-- Manage traveler information.
-- Add, view, update, and delete expenses.
-- Create and manage travel budgets.
-- View expense summaries on a dashboard.
-- User authentication and administrator permissions.
-- Store travel and expense information in MySQL.
+Smart Travel Expense Manager is a university web application for planning
+trips, recording expenses, assigning categories, and monitoring travel budgets.
+Registered users can manage their own travel data, while administrators can
+manage user accounts.
 
 ## Technology Stack
 
-**Frontend**
-- React
-- TypeScript
-- Vite
-- Axios
-- Tailwind CSS or Bootstrap
+| Area | Technology |
+| --- | --- |
+| Frontend | React, TypeScript, Vite, Axios, Recharts |
+| Backend | Python, FastAPI, SQLAlchemy 2.0, Alembic |
+| Database | SQLite for local development, PostgreSQL/Neon for production |
+| Authentication | JWT bearer tokens with Argon2 password hashing |
+| Hosting | Vercel services for the React frontend and FastAPI API |
 
-**Backend**
-- Python
-- FastAPI
-- SQLAlchemy
-- Uvicorn
+## Features
 
-**Database**
-- MySQL Server (local)
-
-**Tools**
-- Visual Studio Code
-- Git and GitHub
-- MySQL Workbench (optional)
+- User registration, login, and profile access.
+- Trip, expense, and budget management.
+- Seeded, read-only expense categories.
+- Dashboard summaries and category spending data.
+- Administrator user management.
 
 ## Project Structure
 
 ```text
-smart-travel-expense-manager/
-├── backend/
-│   ├── app/
-│   │   ├── main.py
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   └── routes/
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── package.json
-├── docs/
-├── README.md
-├── LICENSE
-└── .gitignore
+Smart-Travel-Expense-Manager/
+|-- backend/
+|   |-- alembic/
+|   |-- app/
+|   |   |-- auth/
+|   |   |-- trips/
+|   |   |-- expenses/
+|   |   |-- budgets/
+|   |   |-- categories/
+|   |   |-- dashboard/
+|   |   `-- main.py
+|   `-- requirements.txt
+|-- frontend/
+|   |-- src/
+|   `-- package.json
+|-- docs/
+|-- vercel.toml
+`-- README.md
 ```
 
-This is the planned structure. Some folders and files may be added during development.
+## Run Locally
 
-## Requirements
-
-Install the following before running the project:
-
-- Python 3.11 or later
-- Node.js and npm
-- MySQL Server
-- Git
-
-## Installation and Setup
-
-### 1. Clone the Repository
-
-```bash
-git clone <repository-url>
-cd smart-travel-expense-manager
-```
-
-Replace `<repository-url>` with your GitHub repository URL.
-
-### 2. Set Up the MySQL Database
-
-Start MySQL and run the following SQL commands:
-
-```sql
-CREATE DATABASE smart_travel_expense;
-
-CREATE USER 'travel_app'@'localhost'
-IDENTIFIED BY 'your_password';
-
-GRANT ALL PRIVILEGES
-ON smart_travel_expense.*
-TO 'travel_app'@'localhost';
-```
-
-Use your own database password.
-
-### 3. Run the Backend
-
-Open a terminal and navigate to the backend folder:
-
-```bash
-cd backend
-python -m venv .venv
-```
-
-Activate the virtual environment.
-
-**Windows:**
+### Backend
 
 ```powershell
+cd backend
+python -m venv .venv
 .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+alembic upgrade head
+python -m uvicorn app.main:app --reload
 ```
 
-**macOS/Linux:**
+The local API is available at `http://localhost:8000`, with Swagger UI at
+`http://localhost:8000/docs` and the health check at
+`http://localhost:8000/health`.
 
-```bash
-source .venv/bin/activate
-```
+Copy `backend/.env.example` to a local `.env` file only if you need to override
+the SQLite fallback. Never commit a `.env` file.
 
-Install the required packages:
+### Frontend
 
-```bash
-pip install fastapi "uvicorn[standard]" sqlalchemy pymysql
-```
+In a separate terminal, run:
 
-Configure the MySQL connection string using an environment variable:
-
-```text
-mysql+pymysql://travel_app:YOUR_PASSWORD@127.0.0.1:3306/smart_travel_expense
-```
-
-Replace `YOUR_PASSWORD` with your actual database password. The backend must read this value from its environment configuration.
-
-Start the API after the backend application has been implemented:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-The API will normally run at `http://localhost:8000`.
-
-### 4. Run the Frontend
-
-Open another terminal:
-
-```bash
+```powershell
 cd frontend
 npm install
 npm run dev
 ```
 
-Open the local URL displayed by Vite in your terminal.
+Vite displays the local frontend URL, usually `http://localhost:5173`.
+Copy `frontend/.env.example` to a local `.env` file when changing the API base
+URL.
 
-## API Documentation
+## Deployment
 
-When the FastAPI backend is running, visit:
+The application is configured for Vercel with React and FastAPI deployed as
+services from this repository. Production uses PostgreSQL through Neon or
+another managed PostgreSQL provider.
 
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
+Follow the full environment-variable, migration, deployment, and verification
+checklist in [docs/deployment.md](docs/deployment.md). Do not place database
+URLs, JWT secrets, or Vercel values in the repository.
 
-These pages show the API endpoints implemented in the backend.
+## Documentation
 
-## Database
-
-MySQL stores the application's trips, travelers, expenses, and budgets.
-
-The database runs locally during development. Keep your database password and other secrets out of GitHub.
+- [Product Requirements Document](docs/01-prd.md)
+- [Software Requirements Specification](docs/02-srs.md)
+- [Technical Design Document](docs/03-tdd.md)
+- [Deployment Guide](docs/deployment.md)
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
