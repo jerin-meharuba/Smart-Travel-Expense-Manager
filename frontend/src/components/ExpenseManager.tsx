@@ -202,6 +202,7 @@ export function ExpenseManager() {
                 Currency
                 <input
                   required
+                  minLength={2}
                   maxLength={3}
                   value={formValues.currency_original}
                   onChange={(event) => updateField("currency_original", event.target.value)}
