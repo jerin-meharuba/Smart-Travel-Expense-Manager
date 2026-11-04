@@ -31,6 +31,7 @@ Smart-Travel-Expense-Manager/
 |   |-- alembic/
 |   |-- app/
 |   |   |-- auth/
+|   |   |-- admin/
 |   |   |-- trips/
 |   |   |-- expenses/
 |   |   |-- budgets/
@@ -42,7 +43,7 @@ Smart-Travel-Expense-Manager/
 |   |-- src/
 |   `-- package.json
 |-- docs/
-|-- vercel.toml
+|-- vercel.json
 `-- README.md
 ```
 
@@ -92,6 +93,7 @@ URLs, JWT secrets, or Vercel values in the repository.
 
 ## Documentation
 
+- [Full Project Documentation](docs/project-documentation.md)
 - [Product Requirements Document](docs/01-prd.md)
 - [Software Requirements Specification](docs/02-srs.md)
 - [Technical Design Document](docs/03-tdd.md)
