@@ -49,9 +49,10 @@ def main() -> None:
 
     with SessionLocal.begin() as db:
         user, created = provision_admin(db, data.email, data.password)
+        admin_email = user.email
 
     action = "Created" if created else "Promoted/updated"
-    print(f"{action} administrator account: {user.email}")
+    print(f"{action} administrator account: {admin_email}")
 
 
 if __name__ == "__main__":
