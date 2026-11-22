@@ -91,6 +91,18 @@ Follow the full environment-variable, migration, deployment, and verification
 checklist in [docs/deployment.md](docs/deployment.md). Do not place database
 URLs, JWT secrets, or Vercel values in the repository.
 
+### Provision an administrator
+
+From the `backend` directory, run `python -m app.admin.bootstrap` to create or
+promote an administrator in the database selected by `DATABASE_URL`. The
+command prompts for the email and password without echoing the password. If the
+email already exists, it promotes that account and replaces its password.
+
+For production, run the command only in a trusted environment configured with
+the production `DATABASE_URL`, after applying database migrations. Confirm the
+target database before proceeding. Never put database credentials or admin
+passwords in source code or commit them to Git.
+
 ## Documentation
 
 - [Full Project Documentation](docs/project-documentation.md)
