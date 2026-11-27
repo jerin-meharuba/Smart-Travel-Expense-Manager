@@ -753,12 +753,12 @@ I have no automated tests yet for token expiry, tampering, ownership, or the adm
 
 | Test | Requirement | Result |
 |---|---|---|
-| Expired token returns 401 | AC-01 | [Write Pass or Fail] |
-| Changed token returns 401 | AC-02 | [Write Pass or Fail] |
-| Other user's trip returns 404 | AC-04 | [Write Pass or Fail] |
-| Normal user on admin endpoint returns 403 | AC-05 | [Write Pass or Fail] |
-| Admin edits own account returns 400 | AC-06 | [Write Pass or Fail] |
-| Duplicate email returns 409 | AC-07 | [Write Pass or Fail] |
+| Expired token returns 401 | AC-01 | Passed |
+| Changed token returns 401 | AC-02 | Passed |
+| Other user's trip returns 404 | AC-04 | Failed |
+| Normal user on admin endpoint returns 403 | AC-05 | Passed |
+| Admin edits own account returns 400 | AC-06 | Failed |
+| Duplicate email returns 409 | AC-07 | Passed |
 
 ---
 
@@ -772,43 +772,57 @@ My project has no sessions list, group page, ban, activity log, or CSV export. S
 
 ## D1. User Side
 
-**[Screenshot S1]** Sign up and login page with a validation error, such as a short password. Requirements: FR-AUTH-01, FR-AUTH-03.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 220950" src="https://github.com/user-attachments/assets/86847df2-d750-402b-ab89-03a1b260d735" />
+Sign up and login page with a validation error, such as a short password. Requirements: FR-AUTH-01, FR-AUTH-03.
 
-**[Screenshot S2]** Trips page of a logged-in user, showing only their trips.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 221301" src="https://github.com/user-attachments/assets/5d2f2e9a-4935-4254-a6cf-2026eef3bf1f" />
+Trips page of a logged-in user, showing only their trips.
 
-**[Screenshot S3]** Expenses page with an expense list and the filters.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 221349" src="https://github.com/user-attachments/assets/85ba6fb7-ce85-4b60-b4f0-e05700b24f74" />
+Expenses page with an expense list and the filters.
 
-**[Screenshot S4]** Budgets page showing spending, remaining amount, and usage.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 221509" src="https://github.com/user-attachments/assets/5131d870-add8-43f6-b3fc-43fa60b9ea19" />
+Budgets page showing spending, remaining amount, and usage.
 
-**[Screenshot S5]** Dashboard with the summary and charts.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 221633" src="https://github.com/user-attachments/assets/7b094a3f-7b81-4d5f-ab89-f632764b83a6" />
+Dashboard with the summary and charts.
 
-**[Screenshot S6]** Profile page showing email and role, with the Log out button.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 221705" src="https://github.com/user-attachments/assets/a0a88376-9c50-4c89-b121-a052593396e9" />
+Profile page showing email and role, with the Log out button.
 
 ## D2. Security Behaviour
 
-**[Screenshot S7]** Network tab showing 403 when a normal user calls GET /admin/users.
+<img width="1482" height="972" alt="Screenshot 2026-11-27 222811" src="https://github.com/user-attachments/assets/2dcc1e8b-162d-4b86-a1ac-ae9fc90f5b6d" />
+Network tab showing 403 when a normal user calls GET /admin/users.
 
 In future development, refresh-token support will be added using secure HttpOnly cookies. This will allow users to obtain new access tokens without logging in again. An account status check will also be implemented. This will ensure banned or deactivated users cannot access protected resources. These features are not implemented in the current version.
 
 ## D3. Admin Dashboard
 
-**[Screenshot S10]** Admin panel with the list of users.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 224015" src="https://github.com/user-attachments/assets/b1f8cdb6-01b4-4bd8-9d39-539d7c93497d" />
+Admin panel with the list of users.
 
-**[Screenshot S11]** Admin create or edit user form, with the role field.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 224126" src="https://github.com/user-attachments/assets/05071980-c3cc-4d75-b337-e2228bf7644e" />
+Admin create or edit user form, with the role field.
 
-**[Screenshot]** Message shown when the admin edits their own account.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 224314" src="https://github.com/user-attachments/assets/fc63740c-edfb-4b3b-83cd-727625fd5e6c" />
+Message shown when the admin edits their own account.
 
 ## D4. Deployment
 
-**[Screenshot S13]** Vercel project page with the production deployment and domain.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 224418" src="https://github.com/user-attachments/assets/491ae388-aa17-4930-91a1-6f2336b85534" />
+Vercel project page with the production deployment and domain.
 
-**[Screenshot S14]** Vercel environment variable page with names only. Hide the values.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 224519" src="https://github.com/user-attachments/assets/29cfe6c1-f92b-44e6-ae73-b820193d8de0" />
+Vercel environment variable page with names only. Hide the values.
 
-**[Screenshot S15]** The live API docs page at /docs.
+<img width="1920" height="1020" alt="Screenshot 2026-11-27 224619" src="https://github.com/user-attachments/assets/61b1527b-3243-480e-845e-2b5dfa8ac076" />
+ The live API docs page at /docs.
 
 ## D5. Tests
 
-**[Screenshot S16]** Terminal showing the pytest run with 4 tests passed.
+<img width="1483" height="762" alt="Screenshot 2026-11-27 224948" src="https://github.com/user-attachments/assets/5abd45f5-a601-44bf-b41d-e40e676e73ea" />
+ Terminal showing the pytest run with 4 tests passed.
 
 ---
 
